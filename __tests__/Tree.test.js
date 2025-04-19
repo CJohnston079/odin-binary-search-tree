@@ -16,6 +16,37 @@ describe("Tree", () => {
 		it("defines buidTree()", () => {
 			expect(typeof tree.buildTree).toBe("function");
 		});
+		it("returns null for an empty array", () => {
+			const result = tree.buildTree([]);
+			expect(result).toBeNull();
+		});
+		it("removes duplicates from input", () => {
+			const input = [4, 8, 15, 16, 23, 42, 8, 15];
+			const uniqueInput = [...new Set(input)];
+			const result = tree.buildTree(input);
+			const [values, stack] = [[], []];
+
+			let current = result;
+
+			while (stack.length > 0 || current !== null) {
+				while (current !== null) {
+					stack.push(current);
+					current = current.left;
+				}
+				current = stack.pop();
+				values.push(current.entry);
+				current = current.right;
+			}
+
+			expect(values).toEqual(uniqueInput);
+		});
+		it("builds a balanced tree from an array", () => {
+			const result = tree.buildTree([4, 8, 15, 16, 23, 42]);
+
+			expect(result.entry).toBe(15);
+			expect(result.left.entry).toBe(4);
+			expect(result.right.entry).toBe(23);
+		});
 	});
 	describe("insert(value)", () => {
 		it("defines insert()", () => {
