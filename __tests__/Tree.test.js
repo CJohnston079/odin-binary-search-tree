@@ -34,7 +34,7 @@ describe("Tree", () => {
 					current = current.left;
 				}
 				current = stack.pop();
-				values.push(current.entry);
+				values.push(current.data);
 				current = current.right;
 			}
 
@@ -43,9 +43,9 @@ describe("Tree", () => {
 		it("builds a balanced tree from an array", () => {
 			const result = tree.buildTree([4, 8, 15, 16, 23, 42]);
 
-			expect(result.entry).toBe(15);
-			expect(result.left.entry).toBe(4);
-			expect(result.right.entry).toBe(23);
+			expect(result.data).toBe(15);
+			expect(result.left.data).toBe(4);
+			expect(result.right.data).toBe(23);
 		});
 	});
 	describe("insert(value)", () => {
