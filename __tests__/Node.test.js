@@ -10,13 +10,13 @@ describe("Node", () => {
 	});
 
 	describe("initialisation", () => {
-		it("should initialise 'entry', 'left' and 'right as null by default", () => {
-			expect(defaultNode.entry).toBeNull();
+		it("should initialise 'data', 'left' and 'right as null by default", () => {
+			expect(defaultNode.data).toBeNull();
 			expect(defaultNode.left).toBeNull();
 			expect(defaultNode.right).toBeNull();
 		});
-		it("should correctly set a entry when provided", () => {
-			expect(headNode.entry).toBe(4);
+		it("should correctly set a data when provided", () => {
+			expect(headNode.data).toBe(4);
 			expect(headNode.left).toBeNull();
 			expect(headNode.right).toBeNull();
 		});
