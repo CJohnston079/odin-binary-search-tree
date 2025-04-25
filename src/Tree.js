@@ -66,7 +66,43 @@ class Tree {
 	}
 
 	delete(value) {
-		return;
+		const getSuccessor = function (node) {
+			let current = node.right;
+
+			while (current && current.left) {
+				current = current.left;
+			}
+			return current;
+		};
+
+		const deleteNode = function (node, value) {
+			if (!node) {
+				return null;
+			}
+
+			if (value < node.data) {
+				node.setLeft(deleteNode(node.left, value));
+			} else if (value > node.data) {
+				node.setRight(deleteNode(node.right, value));
+			} else {
+				if (!node.left) {
+					return node.right;
+				}
+
+				if (!node.right) {
+					return node.left;
+				}
+
+				const successor = getSuccessor(node);
+
+				node.data = successor.data;
+				node.setRight(deleteNode(node.right, successor.data));
+			}
+
+			return node;
+		};
+
+		this.root = deleteNode(this.root, value);
 	}
 
 	find(value) {
