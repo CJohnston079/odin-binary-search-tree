@@ -1,10 +1,26 @@
 import Tree from "../src/Tree";
 
 describe("Tree", () => {
+  const testData = [4, 8, 15, 16, 23, 42];
+
+	const getInOrderValues = function (node) {
+		if (!node) {
+			return [];
+		}
+
+		const inOrderValues = [
+			...getInOrderValues(node.left),
+			node.data,
+			...getInOrderValues(node.right),
+		];
+
+		return inOrderValues;
+	};
+
 	let tree;
 
 	beforeEach(() => {
-		tree = new Tree([4, 8, 15, 16, 23, 42]);
+		tree = new Tree(testData);
 	});
 
 	describe("initialisation", () => {
@@ -21,27 +37,14 @@ describe("Tree", () => {
 			expect(result).toBeNull();
 		});
 		it("removes duplicates from input", () => {
-			const input = [4, 8, 15, 16, 23, 42, 8, 15];
-			const uniqueInput = [...new Set(input)];
-			const result = tree.buildTree(input);
-			const [values, stack] = [[], []];
+			const duplicate = testData[Math.floor(Math.random() * testData.length)];
+			const result = tree.buildTree([...testData, duplicate]);
+			const values = getInOrderValues(result);
 
-			let current = result;
-
-			while (stack.length > 0 || current !== null) {
-				while (current !== null) {
-					stack.push(current);
-					current = current.left;
-				}
-				current = stack.pop();
-				values.push(current.data);
-				current = current.right;
-			}
-
-			expect(values).toEqual(uniqueInput);
+			expect(values).toEqual(testData);
 		});
 		it("builds a balanced tree from an array", () => {
-			const result = tree.buildTree([4, 8, 15, 16, 23, 42]);
+			const result = tree.buildTree(testData);
 
 			expect(result.data).toBe(15);
 			expect(result.left.data).toBe(4);
