@@ -31,10 +31,41 @@ class Tree {
 	}
 
 	insert(value) {
-		return;
+    const newNode = new Node(value);
+
+		if (!this._root) {
+			this._root = node;
+			return;
+		}
+
+		const findParentLeaf = function (node) {
+			if (value === node.data) {
+				return;
+			}
+
+			if (value < node.data) {
+				return !node.left ? node : findParentLeaf(node.left);
+			}
+
+			if (value > node.data) {
+				return !node.right ? node : findParentLeaf(node.right);
+			}
+		};
+
+		const parentLeaf = findParentLeaf(this._root);
+
+		if (!parentLeaf) {
+			return;
+		}
+
+		if (value < parentLeaf.data) {
+			parentLeaf.setLeft(newNode);
+		} else {
+			parentLeaf.setRight(newNode);
+		}
 	}
 
-	delete(vaue) {
+	delete(value) {
 		return;
 	}
 
