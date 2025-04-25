@@ -24,8 +24,8 @@ describe("Tree", () => {
 	});
 
 	describe("initialisation", () => {
-		it("should initialise with '_root'", () => {
-			expect(tree.hasOwnProperty("_root")).toBe(true);
+		it("should initialise with 'root'", () => {
+			expect(tree.hasOwnProperty("root")).toBe(true);
 		});
 	});
 	describe("buidTree(array)", () => {
@@ -56,37 +56,33 @@ describe("Tree", () => {
 			expect(typeof tree.insert).toBe("function");
 		});
 		it("inserts a new value in the correct position", () => {
-			const beforeInsert = getInOrderValues(tree._root);
 			const newValues = testData.map(x => x * 3);
 			const newValue = newValues[Math.floor(Math.random() * newValues.length)];
 			tree.insert(newValue);
-			const afterInsert = getInOrderValues(tree._root);
+			const afterInsert = getInOrderValues(tree.root);
 
-			expect(afterInsert).toEqual([...beforeInsert, newValue].sort((a, b) => a - b));
+			expect(afterInsert).toEqual([...testData, newValue].sort((a, b) => a - b));
 		});
 		it("inserts a value smaller than all existing values", () => {
-			const beforeInsert = getInOrderValues(tree._root);
 			const smallest = Math.min(...testData) - 1;
 			tree.insert(smallest);
-			const afterInsert = getInOrderValues(tree._root);
+			const afterInsert = getInOrderValues(tree.root);
 
-			expect(afterInsert).toEqual([...beforeInsert, smallest].sort((a, b) => a - b));
+			expect(afterInsert).toEqual([...testData, smallest].sort((a, b) => a - b));
 		});
 		it("inserts a value larger than all existing values", () => {
-			const beforeInsert = getInOrderValues(tree._root);
 			const largest = Math.max(...testData) + 1;
 			tree.insert(largest);
-			const afterInsert = getInOrderValues(tree._root);
+			const afterInsert = getInOrderValues(tree.root);
 
-			expect(afterInsert).toEqual([...beforeInsert, largest].sort((a, b) => a - b));
+			expect(afterInsert).toEqual([...testData, largest].sort((a, b) => a - b));
 		});
 		it("does not insert a duplicate value", () => {
-			const beforeInsert = getInOrderValues(tree._root);
 			const duplicate = testData[Math.floor(Math.random() * testData.length)];
 			tree.insert(duplicate);
-			const afterInsert = getInOrderValues(tree._root);
+			const afterInsert = getInOrderValues(tree.root);
 
-			expect(afterInsert).toEqual(beforeInsert);
+			expect(afterInsert).toEqual(testData);
 		});
 	});
 	describe("delete(value)", () => {

@@ -2,7 +2,7 @@ import Node from "./Node.js";
 
 class Tree {
 	constructor(array = []) {
-		this._root = this.buildTree(array);
+		this.root = this.buildTree(array);
 	}
 
 	buildTree(arr) {
@@ -31,10 +31,10 @@ class Tree {
 	}
 
 	insert(value) {
-    const newNode = new Node(value);
+		const newNode = new Node(value);
 
-		if (!this._root) {
-			this._root = node;
+		if (!this.root) {
+			this.root = node;
 			return;
 		}
 
@@ -52,7 +52,7 @@ class Tree {
 			}
 		};
 
-		const parentLeaf = findParentLeaf(this._root);
+		const parentLeaf = findParentLeaf(this.root);
 
 		if (!parentLeaf) {
 			return;
