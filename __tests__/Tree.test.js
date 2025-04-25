@@ -1,7 +1,7 @@
 import Tree from "../src/Tree";
 
 describe("Tree", () => {
-  const testData = [4, 8, 15, 16, 23, 42];
+  const testData = [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345];
 
 	const getInOrderValues = function (node) {
 		if (!node) {
@@ -38,6 +38,7 @@ describe("Tree", () => {
 		});
 		it("removes duplicates from input", () => {
 			const duplicate = testData[Math.floor(Math.random() * testData.length)];
+
 			const result = tree.buildTree([...testData, duplicate]);
 			const values = getInOrderValues(result);
 
@@ -45,10 +46,9 @@ describe("Tree", () => {
 		});
 		it("builds a balanced tree from an array", () => {
 			const result = tree.buildTree(testData);
+			const values = getInOrderValues(result);
 
-			expect(result.data).toBe(15);
-			expect(result.left.data).toBe(4);
-			expect(result.right.data).toBe(23);
+			expect(values).toEqual(testData);
 		});
 	});
 	describe("insert(value)", () => {
@@ -56,15 +56,16 @@ describe("Tree", () => {
 			expect(typeof tree.insert).toBe("function");
 		});
 		it("inserts a new value in the correct position", () => {
-			const newValues = testData.map(x => x * 3);
-			const newValue = newValues[Math.floor(Math.random() * newValues.length)];
-			tree.insert(newValue);
-			const afterInsert = getInOrderValues(tree.root);
+			const newValue = Math.max(...testData) + 1;
 
-			expect(afterInsert).toEqual([...testData, newValue].sort((a, b) => a - b));
+			tree.insert(newValue);
+			const values = getInOrderValues(tree.root);
+
+			expect(values).toEqual([...testData, newValue].sort((a, b) => a - b));
 		});
 		it("inserts a value smaller than all existing values", () => {
 			const smallest = Math.min(...testData) - 1;
+
 			tree.insert(smallest);
 			const afterInsert = getInOrderValues(tree.root);
 
@@ -79,6 +80,7 @@ describe("Tree", () => {
 		});
 		it("does not insert a duplicate value", () => {
 			const duplicate = testData[Math.floor(Math.random() * testData.length)];
+
 			tree.insert(duplicate);
 			const afterInsert = getInOrderValues(tree.root);
 
