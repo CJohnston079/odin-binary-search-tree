@@ -91,6 +91,79 @@ describe("Tree", () => {
 		it("defines delete()", () => {
 			expect(typeof tree.delete).toBe("function");
 		});
+		it("removes a leaf node", () => {
+			const getLeaf = function (node) {
+				if (!node.left && !node.right) {
+					return node.data;
+				}
+
+				return node.left ? getLeaf(node.left) : getLeaf(node.right);
+			};
+
+			const leaf = getLeaf(tree.root);
+
+			tree.delete(leaf);
+			const afterDelete = getInOrderValues(tree.root);
+
+			expect(afterDelete).toEqual(testData.filter(item => item !== leaf));
+		});
+		it("removes a node with a single child", () => {
+			const getSingleChildParentNode = function (node, isRoot = true) {
+				if (!node.left || (!node.right && !isRoot)) {
+					return node.data;
+				}
+
+				if (node.left) {
+					return getSingleChildParentNode(node.left);
+				} else {
+					return getSingleChildParentNode(node.right);
+				}
+			};
+
+			const value = getSingleChildParentNode(tree.root);
+			const expected = testData.filter(item => item !== value);
+
+			tree.delete(value);
+			const afterDelete = getInOrderValues(tree.root);
+
+			expect(afterDelete).toEqual(expected);
+		});
+		it("removes a node with both children", () => {
+			const getTwoChildParentNode = function (node, isRoot = true) {
+				if (node.left && node.right && !isRoot) {
+					return node.data;
+				}
+
+				let current = null;
+
+				if (node.left) {
+					current = getTwoChildParentNode(node.left, false);
+				}
+
+				if (!current && node.right) {
+					current = getTwoChildParentNode(node.right, false);
+				}
+
+				return current;
+			};
+
+			const value = getTwoChildParentNode(tree.root);
+			const expected = testData.filter(item => item != value);
+
+			tree.delete(value);
+			const afterDelete = getInOrderValues(tree.root);
+
+			expect(afterDelete).toEqual(expected);
+		});
+		it("removes the root node", () => {
+			const root = tree.root.data;
+			const expected = testData.filter(item => item != root);
+
+			tree.delete(root);
+			const afterDelete = getInOrderValues(tree.root);
+
+			expect(afterDelete).toEqual(expected);
+		});
 	});
 	describe("find(value)", () => {
 		it("defines find()", () => {
