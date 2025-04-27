@@ -169,6 +169,21 @@ describe("Tree", () => {
 		it("defines find()", () => {
 			expect(typeof tree.find).toBe("function");
 		});
+		it("returns null if no value is found", () => {
+			const notInTree = Math.max(...testData) + 1;
+			const result = tree.find(notInTree);
+			expect(result).toBeNull();
+		});
+		it("returns the root of the tree", () => {
+			const root = tree.root.data;
+			const result = tree.find(root);
+			expect(result.data).toBe(root);
+		});
+		it("returns a child node in the tree", () => {
+			const value = testData[Math.floor(Math.random() * testData.length)];
+			const result = tree.find(value);
+			expect(result.data).toBe(value);
+		});
 	});
 	describe("levelOrder(cb)", () => {
 		it("defines levelOrder()", () => {
