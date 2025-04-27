@@ -105,8 +105,22 @@ class Tree {
 		this.root = deleteNode(this.root, value);
 	}
 
-	find(value) {
-		return;
+	find(value, node = this.root) {
+		if (!node) {
+			return null;
+		}
+
+		if (node.data === value) {
+			return node;
+		}
+
+		const foundInLeft = this.find(value, node.left);
+
+		if (foundInLeft) {
+			return foundInLeft;
+		}
+
+		return this.find(value, node.right);
 	}
 
 	levelOrder(cb) {
