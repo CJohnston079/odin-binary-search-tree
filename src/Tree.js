@@ -1,4 +1,5 @@
 import Node from "./Node.js";
+import Queue from "./Queue.js";
 
 class Tree {
 	constructor(array = []) {
@@ -124,7 +125,24 @@ class Tree {
 	}
 
 	levelOrder(cb) {
-		return;
+		const queue = new Queue();
+
+		if (this.root) {
+			queue.enqueue(this.root);
+		}
+
+		while (!queue.isEmpty()) {
+			const node = queue.dequeue();
+			cb(node);
+
+			if (node.left) {
+				queue.enqueue(node.left);
+			}
+
+			if (node.right) {
+				queue.enqueue(node.right);
+			}
+		}
 	}
 
 	inOrder(cb) {
