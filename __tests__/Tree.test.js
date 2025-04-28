@@ -189,6 +189,17 @@ describe("Tree", () => {
 		it("defines levelOrder()", () => {
 			expect(typeof tree.levelOrder).toBe("function");
 		});
+    it("invokes the callback for each node in level order", () => {
+			const cb = jest.fn();
+			const expectedLevelOrder = [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345];
+
+			tree.levelOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedLevelOrder[i]);
+			});
+		});
 	});
 	describe("inOrder(cb)", () => {
 		it("defines inOrder()", () => {
