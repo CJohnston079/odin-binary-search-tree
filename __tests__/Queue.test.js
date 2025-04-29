@@ -51,8 +51,8 @@ describe("Queue", () => {
 		it("throws an error when attempting to dequeue from an empty queue", () => {
 			const emptyQueue = new Queue();
 			expect(() => {
-				emptyQueue.dequeue().toThrow(Error);
-			});
+				emptyQueue.dequeue();
+			}).toThrowError(new Error("Cannot dequeue from an empty queue."));
 		});
 	});
 });

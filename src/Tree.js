@@ -125,6 +125,10 @@ class Tree {
 	}
 
 	levelOrder(cb) {
+    if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
 		const queue = new Queue();
 
 		if (this.root) {
@@ -146,6 +150,10 @@ class Tree {
 	}
 
 	inOrder(cb, node = this.root) {
+    if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
 		if (!node) {
 			return;
 		}
@@ -156,6 +164,10 @@ class Tree {
 	}
 
 	preOrder(cb, node = this.root) {
+    if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
 		if (!node) {
 			return;
 		}
@@ -166,6 +178,10 @@ class Tree {
 	}
 
 	postOrder(cb, node = this.root) {
+    if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
 		if (!node) {
 			return;
 		}
