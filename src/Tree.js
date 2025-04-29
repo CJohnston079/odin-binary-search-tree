@@ -145,16 +145,34 @@ class Tree {
 		}
 	}
 
-	inOrder(cb) {
-		return;
+	inOrder(cb, node = this.root) {
+		if (!node) {
+			return;
+		}
+
+		this.inOrder(cb, node.left);
+		cb(node);
+		this.inOrder(cb, node.right);
 	}
 
-	preOrder(cb) {
-		return;
+	preOrder(cb, node = this.root) {
+		if (!node) {
+			return;
+		}
+
+		cb(node);
+		this.preOrder(cb, node.left);
+		this.preOrder(cb, node.right);
 	}
 
-	postOrder(cb) {
-		return;
+	postOrder(cb, node = this.root) {
+		if (!node) {
+			return;
+		}
+
+		this.postOrder(cb, node.left);
+		this.postOrder(cb, node.right);
+		cb(node);
 	}
 
 	height(value) {
