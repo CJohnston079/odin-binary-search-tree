@@ -189,7 +189,7 @@ describe("Tree", () => {
 		it("defines levelOrder()", () => {
 			expect(typeof tree.levelOrder).toBe("function");
 		});
-    it("invokes the callback for each node in level order", () => {
+		it("invokes the callback for each node in level order", () => {
 			const cb = jest.fn();
 			const expectedLevelOrder = [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345];
 
@@ -200,20 +200,73 @@ describe("Tree", () => {
 				expect(call[0].data).toBe(expectedLevelOrder[i]);
 			});
 		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.levelOrder();
+			}).toThrowError("A callback function is required.");
+		});
 	});
 	describe("inOrder(cb)", () => {
 		it("defines inOrder()", () => {
 			expect(typeof tree.inOrder).toBe("function");
+		});
+		it("invokes the callback for each node in inorder", () => {
+			const cb = jest.fn();
+			const expectedInorder = testData.sort((a, b) => a - b);
+
+			tree.inOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedInorder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.inOrder();
+			}).toThrowError("A callback function is required.");
 		});
 	});
 	describe("preOrder(cb)", () => {
 		it("defines preOrder()", () => {
 			expect(typeof tree.preOrder).toBe("function");
 		});
+		it("invokes the callback for each node in preorder", () => {
+			const cb = jest.fn();
+			const expectedPreorder = [8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345];
+
+			tree.preOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedPreorder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.preOrder();
+			}).toThrowError("A callback function is required.");
+		});
 	});
 	describe("postOrder(cb)", () => {
 		it("defines postOrder()", () => {
 			expect(typeof tree.postOrder).toBe("function");
+		});
+		it("invokes the callback for each node in preorder", () => {
+			const cb = jest.fn();
+			const expectedPostorder = [3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8];
+
+			tree.postOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedPostorder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.postOrder();
+			}).toThrowError("A callback function is required.");
 		});
 	});
 	describe("height(value)", () => {
