@@ -273,10 +273,36 @@ describe("Tree", () => {
 		it("defines height()", () => {
 			expect(typeof tree.height).toBe("function");
 		});
+		it("returns null if value not found", () => {
+			const notInTree = Math.max(...testData) + 1;
+			expect(tree.height(notInTree)).toBeNull();
+		});
+		it("returns the number of edges from a found node to a leaf node", () => {
+			const input = 67;
+			const expected = 2;
+			expect(tree.height(input)).toBe(expected);
+		});
+		it("returns the 0 for a leaf node", () => {
+			const leafValue = 3;
+			expect(tree.height(leafValue)).toBe(0);
+		});
 	});
 	describe("depth(value)", () => {
 		it("defines depth()", () => {
 			expect(typeof tree.depth).toBe("function");
+		});
+		it("returns null if value not found", () => {
+			const notInTree = Math.max(...testData) + 1;
+			expect(tree.depth(notInTree)).toBeNull();
+		});
+		it("returns the number of edges from the root to the found node", () => {
+			const input = 324;
+			const expected = 2;
+			expect(tree.depth(input)).toBe(expected);
+		});
+		it("returns 0 for the root node", () => {
+			const rootValue = 8;
+			expect(tree.depth(rootValue)).toBe(0);
 		});
 	});
 	describe("isBalanced()", () => {
