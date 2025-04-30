@@ -323,5 +323,23 @@ describe("Tree", () => {
 		it("defines rebalance()", () => {
 			expect(typeof tree.rebalance).toBe("function");
 		});
+    it("rebalances an unbalanced tree", () => {
+			const newValueA = Math.max(...testData) + 1;
+			const newValueB = Math.max(...testData) + 2;
+			const inOrderValues = [...testData, newValueA, newValueB];
+
+			tree.insert(newValueA);
+			tree.insert(newValueB);
+
+			const inOrderBefore = getInOrderValues(tree.root);
+			expect(inOrderBefore).toEqual(inOrderValues);
+
+			tree.rebalance();
+
+			const inOrderAfter = getInOrderValues(tree.root);
+			expect(inOrderAfter).toEqual(inOrderValues);
+
+			expect(tree.isBalanced()).toBe(true);
+		});
 	});
 });
