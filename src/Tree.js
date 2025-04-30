@@ -232,8 +232,19 @@ class Tree {
 		return edgesCount(this.root);
 	}
 
-	isBalanced() {
-		return;
+	isBalanced(node = this.root) {
+		if (node === null) {
+			return true;
+		}
+
+		const leftHeight = this.height(node.left?.data);
+		const rightHeight = this.height(node.right?.data);
+
+		if (Math.abs(leftHeight - rightHeight) > 1) {
+			return false;
+		}
+
+		return this.isBalanced(node.left) && this.isBalanced(node.right);
 	}
 
 	rebalance() {
