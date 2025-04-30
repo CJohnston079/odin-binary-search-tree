@@ -248,7 +248,14 @@ class Tree {
 	}
 
 	rebalance() {
-		return;
+		const arr = [];
+		const populateArr = node => arr.push(node.data);
+
+		this.inOrder(populateArr);
+
+		this.root = this.buildTree(arr);
+
+		return this.root;
 	}
 }
 
