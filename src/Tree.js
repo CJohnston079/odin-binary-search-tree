@@ -125,7 +125,7 @@ class Tree {
 	}
 
 	levelOrder(cb) {
-    if (!cb || typeof cb !== "function") {
+		if (!cb || typeof cb !== "function") {
 			throw new Error("A callback function is required.");
 		}
 
@@ -150,7 +150,7 @@ class Tree {
 	}
 
 	inOrder(cb, node = this.root) {
-    if (!cb || typeof cb !== "function") {
+		if (!cb || typeof cb !== "function") {
 			throw new Error("A callback function is required.");
 		}
 
@@ -164,7 +164,7 @@ class Tree {
 	}
 
 	preOrder(cb, node = this.root) {
-    if (!cb || typeof cb !== "function") {
+		if (!cb || typeof cb !== "function") {
 			throw new Error("A callback function is required.");
 		}
 
@@ -178,7 +178,7 @@ class Tree {
 	}
 
 	postOrder(cb, node = this.root) {
-    if (!cb || typeof cb !== "function") {
+		if (!cb || typeof cb !== "function") {
 			throw new Error("A callback function is required.");
 		}
 
@@ -192,11 +192,44 @@ class Tree {
 	}
 
 	height(value) {
-		return;
+		const node = this.find(value);
+
+		if (!node) {
+			return null;
+		}
+
+		const edgesCount = function (node) {
+			if (!node) {
+				return -1;
+			}
+
+			const leftHeight = edgesCount(node.left);
+			const rightHeight = edgesCount(node.right);
+
+			return Math.max(leftHeight, rightHeight) + 1;
+		};
+
+		return edgesCount(node);
 	}
 
 	depth(value) {
-		return;
+		const edgesCount = function (node, count = 0) {
+			if (!node) {
+				return null;
+			}
+
+			if (node.data === value) {
+				return count;
+			}
+
+			if (node.data < value) {
+				return edgesCount(node.right, count + 1);
+			} else {
+				return edgesCount(node.left, count + 1);
+			}
+		};
+
+		return edgesCount(this.root);
 	}
 
 	isBalanced() {
