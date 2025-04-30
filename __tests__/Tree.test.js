@@ -309,6 +309,15 @@ describe("Tree", () => {
 		it("defines isBalanced()", () => {
 			expect(typeof tree.isBalanced).toBe("function");
 		});
+    it("returns true if the height difference between a trees left and right subtrees is no more than 1", () => {
+			expect(tree.isBalanced()).toBe(true);
+		});
+		it("returns false if the height difference between a trees left and right subtrees is greater than 1", () => {
+			const newValue = Math.max(...testData) + 1;
+			tree.insert(newValue);
+			tree.insert(newValue + 1);
+			expect(tree.isBalanced()).toBe(false);
+		});
 	});
 	describe("rebalance()", () => {
 		it("defines rebalance()", () => {
