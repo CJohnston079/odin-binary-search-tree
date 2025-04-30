@@ -169,45 +169,177 @@ describe("Tree", () => {
 		it("defines find()", () => {
 			expect(typeof tree.find).toBe("function");
 		});
+		it("returns null if no value is found", () => {
+			const notInTree = Math.max(...testData) + 1;
+			const result = tree.find(notInTree);
+			expect(result).toBeNull();
+		});
+		it("returns the root of the tree", () => {
+			const root = tree.root.data;
+			const result = tree.find(root);
+			expect(result.data).toBe(root);
+		});
+		it("returns a child node in the tree", () => {
+			const value = testData[Math.floor(Math.random() * testData.length)];
+			const result = tree.find(value);
+			expect(result.data).toBe(value);
+		});
 	});
 	describe("levelOrder(cb)", () => {
 		it("defines levelOrder()", () => {
 			expect(typeof tree.levelOrder).toBe("function");
+		});
+		it("invokes the callback for each node in level order", () => {
+			const cb = jest.fn();
+			const expectedLevelOrder = [8, 4, 67, 1, 5, 9, 324, 3, 7, 23, 6345];
+
+			tree.levelOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedLevelOrder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.levelOrder();
+			}).toThrowError("A callback function is required.");
 		});
 	});
 	describe("inOrder(cb)", () => {
 		it("defines inOrder()", () => {
 			expect(typeof tree.inOrder).toBe("function");
 		});
+		it("invokes the callback for each node in inorder", () => {
+			const cb = jest.fn();
+			const expectedInorder = testData.sort((a, b) => a - b);
+
+			tree.inOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedInorder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.inOrder();
+			}).toThrowError("A callback function is required.");
+		});
 	});
 	describe("preOrder(cb)", () => {
 		it("defines preOrder()", () => {
 			expect(typeof tree.preOrder).toBe("function");
+		});
+		it("invokes the callback for each node in preorder", () => {
+			const cb = jest.fn();
+			const expectedPreorder = [8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345];
+
+			tree.preOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedPreorder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.preOrder();
+			}).toThrowError("A callback function is required.");
 		});
 	});
 	describe("postOrder(cb)", () => {
 		it("defines postOrder()", () => {
 			expect(typeof tree.postOrder).toBe("function");
 		});
+		it("invokes the callback for each node in preorder", () => {
+			const cb = jest.fn();
+			const expectedPostorder = [3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8];
+
+			tree.postOrder(cb);
+
+			expect(cb).toHaveBeenCalledTimes(testData.length);
+			cb.mock.calls.forEach((call, i) => {
+				expect(call[0].data).toBe(expectedPostorder[i]);
+			});
+		});
+		it("throws and error if no callback in passed", () => {
+			expect(() => {
+				tree.postOrder();
+			}).toThrowError("A callback function is required.");
+		});
 	});
 	describe("height(value)", () => {
 		it("defines height()", () => {
 			expect(typeof tree.height).toBe("function");
+		});
+		it("returns null if value not found", () => {
+			const notInTree = Math.max(...testData) + 1;
+			expect(tree.height(notInTree)).toBeNull();
+		});
+		it("returns the number of edges from a found node to a leaf node", () => {
+			const input = 67;
+			const expected = 2;
+			expect(tree.height(input)).toBe(expected);
+		});
+		it("returns the 0 for a leaf node", () => {
+			const leafValue = 3;
+			expect(tree.height(leafValue)).toBe(0);
 		});
 	});
 	describe("depth(value)", () => {
 		it("defines depth()", () => {
 			expect(typeof tree.depth).toBe("function");
 		});
+		it("returns null if value not found", () => {
+			const notInTree = Math.max(...testData) + 1;
+			expect(tree.depth(notInTree)).toBeNull();
+		});
+		it("returns the number of edges from the root to the found node", () => {
+			const input = 324;
+			const expected = 2;
+			expect(tree.depth(input)).toBe(expected);
+		});
+		it("returns 0 for the root node", () => {
+			const rootValue = 8;
+			expect(tree.depth(rootValue)).toBe(0);
+		});
 	});
 	describe("isBalanced()", () => {
 		it("defines isBalanced()", () => {
 			expect(typeof tree.isBalanced).toBe("function");
 		});
+    it("returns true if the height difference between a trees left and right subtrees is no more than 1", () => {
+			expect(tree.isBalanced()).toBe(true);
+		});
+		it("returns false if the height difference between a trees left and right subtrees is greater than 1", () => {
+			const newValue = Math.max(...testData) + 1;
+			tree.insert(newValue);
+			tree.insert(newValue + 1);
+			expect(tree.isBalanced()).toBe(false);
+		});
 	});
 	describe("rebalance()", () => {
 		it("defines rebalance()", () => {
 			expect(typeof tree.rebalance).toBe("function");
+		});
+    it("rebalances an unbalanced tree", () => {
+			const newValueA = Math.max(...testData) + 1;
+			const newValueB = Math.max(...testData) + 2;
+			const inOrderValues = [...testData, newValueA, newValueB];
+
+			tree.insert(newValueA);
+			tree.insert(newValueB);
+
+			const inOrderBefore = getInOrderValues(tree.root);
+			expect(inOrderBefore).toEqual(inOrderValues);
+
+			tree.rebalance();
+
+			const inOrderAfter = getInOrderValues(tree.root);
+			expect(inOrderAfter).toEqual(inOrderValues);
+
+			expect(tree.isBalanced()).toBe(true);
 		});
 	});
 });

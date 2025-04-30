@@ -1,4 +1,5 @@
 import Node from "./Node.js";
+import Queue from "./Queue.js";
 
 class Tree {
 	constructor(array = []) {
@@ -105,40 +106,156 @@ class Tree {
 		this.root = deleteNode(this.root, value);
 	}
 
-	find(value) {
-		return;
+	find(value, node = this.root) {
+		if (!node) {
+			return null;
+		}
+
+		if (node.data === value) {
+			return node;
+		}
+
+		const foundInLeft = this.find(value, node.left);
+
+		if (foundInLeft) {
+			return foundInLeft;
+		}
+
+		return this.find(value, node.right);
 	}
 
 	levelOrder(cb) {
-		return;
+		if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
+		const queue = new Queue();
+
+		if (this.root) {
+			queue.enqueue(this.root);
+		}
+
+		while (!queue.isEmpty()) {
+			const node = queue.dequeue();
+			cb(node);
+
+			if (node.left) {
+				queue.enqueue(node.left);
+			}
+
+			if (node.right) {
+				queue.enqueue(node.right);
+			}
+		}
 	}
 
-	inOrder(cb) {
-		return;
+	inOrder(cb, node = this.root) {
+		if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
+		if (!node) {
+			return;
+		}
+
+		this.inOrder(cb, node.left);
+		cb(node);
+		this.inOrder(cb, node.right);
 	}
 
-	preOrder(cb) {
-		return;
+	preOrder(cb, node = this.root) {
+		if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
+		if (!node) {
+			return;
+		}
+
+		cb(node);
+		this.preOrder(cb, node.left);
+		this.preOrder(cb, node.right);
 	}
 
-	postOrder(cb) {
-		return;
+	postOrder(cb, node = this.root) {
+		if (!cb || typeof cb !== "function") {
+			throw new Error("A callback function is required.");
+		}
+
+		if (!node) {
+			return;
+		}
+
+		this.postOrder(cb, node.left);
+		this.postOrder(cb, node.right);
+		cb(node);
 	}
 
 	height(value) {
-		return;
+		const node = this.find(value);
+
+		if (!node) {
+			return null;
+		}
+
+		const edgesCount = function (node) {
+			if (!node) {
+				return -1;
+			}
+
+			const leftHeight = edgesCount(node.left);
+			const rightHeight = edgesCount(node.right);
+
+			return Math.max(leftHeight, rightHeight) + 1;
+		};
+
+		return edgesCount(node);
 	}
 
 	depth(value) {
-		return;
+		const edgesCount = function (node, count = 0) {
+			if (!node) {
+				return null;
+			}
+
+			if (node.data === value) {
+				return count;
+			}
+
+			if (node.data < value) {
+				return edgesCount(node.right, count + 1);
+			} else {
+				return edgesCount(node.left, count + 1);
+			}
+		};
+
+		return edgesCount(this.root);
 	}
 
-	isBalanced() {
-		return;
+	isBalanced(node = this.root) {
+		if (node === null) {
+			return true;
+		}
+
+		const leftHeight = this.height(node.left?.data);
+		const rightHeight = this.height(node.right?.data);
+
+		if (Math.abs(leftHeight - rightHeight) > 1) {
+			return false;
+		}
+
+		return this.isBalanced(node.left) && this.isBalanced(node.right);
 	}
 
 	rebalance() {
-		return;
+		const arr = [];
+		const populateArr = node => arr.push(node.data);
+
+		this.inOrder(populateArr);
+
+		this.root = this.buildTree(arr);
+
+		return this.root;
 	}
 }
 
