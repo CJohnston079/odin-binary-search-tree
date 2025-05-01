@@ -35,34 +35,34 @@ class Tree {
 		const newNode = new Node(value);
 
 		if (!this.root) {
-			this.root = node;
+			this.root = newNode;
 			return;
 		}
 
-		const findParentLeaf = function (node) {
+		const findParent = function (node) {
 			if (value === node.data) {
 				return;
 			}
 
 			if (value < node.data) {
-				return !node.left ? node : findParentLeaf(node.left);
+				return !node.left ? node : findParent(node.left);
 			}
 
 			if (value > node.data) {
-				return !node.right ? node : findParentLeaf(node.right);
+				return !node.right ? node : findParent(node.right);
 			}
 		};
 
-		const parentLeaf = findParentLeaf(this.root);
+		const parent = findParent(this.root);
 
-		if (!parentLeaf) {
+		if (!parent) {
 			return;
 		}
 
-		if (value < parentLeaf.data) {
-			parentLeaf.setLeft(newNode);
+		if (value < parent.data) {
+			parent.setLeft(newNode);
 		} else {
-			parentLeaf.setRight(newNode);
+			parent.setRight(newNode);
 		}
 	}
 
